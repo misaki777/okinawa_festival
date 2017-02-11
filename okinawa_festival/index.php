@@ -2,7 +2,7 @@
 /**
  * TOPページ
  */
+include_once './common/common.php';
 ?>
 <html>
-    <?php echo 'TOP'; ?>
 </html>
