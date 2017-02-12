@@ -3,29 +3,17 @@
  * TOPページ
  */
 include_once './common/common.php';
-?>
-<?php /**
-<html>
-<script src="/js/d3.js" charset="utf-8"></script>
 
-<script>
-//var url = "https://opendata.resas-portal.go.jp/api/v1/partner/asutomo/event";
-var url = "https://opendata.resas-portal.go.jp/api/v1/cities?prefCode=47";
+$response = execResasApi('api/v1/cities', array('prefCode' => 47));
 
-d3.request(url)
-    .header("X-API-KEY", "<?php echo RESAS_API_KEY; ?>")
-    .mimeType("application/json")
-    .response(function(xhr) { return JSON.parse(xhr.responseText) })
-    .get(callback)
-
-function callback(json){
-    console.log(json)
+$cities = array();
+foreach ($response->result as $city) {
+    $cities[] = array(
+        'name' => $city->cityName,
+        'prefCode' => $city->cityCode
+    );
 }
-</script>
-</html>
-*/ ?>
-
-
+?>
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -55,6 +43,11 @@ function callback(json){
         }
       }
     </style>
+
+    <script src="/js/d3.js" charset="utf-8"></script>
+
+    <script src="http://code.jquery.com/jquery.js"></script>
+    <script src="/js/bootstrap.min.js"></script>
   </head>
 
   <body>
@@ -85,11 +78,8 @@ function callback(json){
       <div class="row-fluid">
         <div class="span3">
           <div class="well sidebar-nav">
-            <ul class="nav nav-list">
-              <li class="nav-header">Sidebar</li>
-              <li class="active"><a href="#">Link</a></li>
-              <li><a href="#">Link</a></li>
-              <li><a href="#">Link</a></li>
+            <ul class="nav nav-list" id="search-pref">
+              <li class="nav-header">市町村</li>
               <li><a href="#">Link</a></li>
             </ul>
           </div><!--/.well -->
