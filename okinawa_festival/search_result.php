@@ -108,7 +108,7 @@ foreach ($eventsResponse->result as $event) {
                   foreach ($festivals as $festival) {
                       $id = $festival['id'];
                       $name = $festival['name'];
-                      $url = '/detail.php?id='.$id;
+                      $url = '/detail.php?id='.$id.'&cityCode='.$prefCode;
               ?>
               <tr><td><a href="<?php echo $url; ?>"><?php echo $name; ?></a></td></tr>
               <?php }?>
