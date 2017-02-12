@@ -76,20 +76,7 @@ foreach ($eventsResponse->result as $event) {
     <div class="navbar navbar-inverse navbar-fixed-top">
       <div class="navbar-inner">
         <div class="container-fluid">
-          <button type="button" class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-          </button>
           <a class="brand" href="/"><?php echo SERVICE_NAME; ?></a>
-          <div class="nav-collapse collapse">
-            <p class="navbar-text pull-right"></p>
-            <ul class="nav">
-              <!--
-              <li><a href="#contact">Contact</a></li>
-               -->
-            </ul>
-          </div><!--/.nav-collapse -->
         </div>
       </div>
     </div>
@@ -133,7 +120,7 @@ foreach ($eventsResponse->result as $event) {
       <hr>
 
       <footer>
-        <p>&copy; okinawa-festival</p>
+        <p>&copy; <?php echo SERVICE_NAME; ?></p>
       </footer>
 
     </div><!--/.fluid-container-->

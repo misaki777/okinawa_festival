@@ -200,7 +200,7 @@ $tags = explode("　", $event->tags);
       <hr>
 
       <footer>
-        <p>&copy; okinawa-festival</p>
+        <p>&copy; <?php echo SERVICE_NAME; ?></p>
       </footer>
 
     </div><!--/.fluid-container-->
