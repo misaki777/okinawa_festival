@@ -1,24 +1,45 @@
 <?php
 /**
- * 検索ページ
+ * 検索結果ページ
  */
 include_once './common/common.php';
 
-$response = execResasApi('api/v1/cities', array('prefCode' => 47));
+$prefCode = $_GET['prefCode'];
+$searchCityName = '';
 
+$citiesResponse = execResasApi('api/v1/cities', array('prefCode' => 47));
 $cities = array();
-foreach ($response->result as $city) {
+foreach ($citiesResponse->result as $city) {
     $cities[] = array(
         'name' => $city->cityName,
         'prefCode' => $city->cityCode
     );
+
+    if ($prefCode == $city->cityCode) {
+        $searchCityName = $city->cityName;
+    }
 }
+
+$eventsResponse = execResasApi('api/v1/partner/asutomo/event', array('cities' => $prefCode, 'count' => 10000, 'disable' => 0));
+$festivals = array();
+foreach ($eventsResponse->result as $event) {
+    $match = (bool) preg_match('/祭り/', $event->event_categories);
+    if (!$match) {
+        continue;
+    }
+
+    $festivals[] = array(
+        'id' => $event->event_id,
+        'name' => $event->event_title
+    );
+}
+
 ?>
 <!DOCTYPE html>
 <html lang="ja">
   <head>
     <meta charset="utf-8">
-    <title>お祭り検索</title>
+    <title><?php echo $searchCityName; ?>のお祭り検索結果</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="">
     <meta name="author" content="">
@@ -91,11 +112,21 @@ foreach ($response->result as $city) {
           </div><!--/.well -->
         </div><!--/span-->
         <div class="span9">
-          <div class="hero-unit">
-            <h1>お祭り検索</h1>
-            <p>左の市町村を選択して検索して下さい。</p>
-          </div>
           <div class="row-fluid">
+            <table class="table">
+              <tr>
+                <th>祭り名</th>
+              </tr>
+
+              <?php
+                  foreach ($festivals as $festival) {
+                      $id = $festival['id'];
+                      $name = $festival['name'];
+                      $url = '/detail.php?id='.$id;
+              ?>
+              <tr><td><a href="<?php echo $url; ?>"><?php echo $name; ?></a></td></tr>
+              <?php }?>
+            </table>
           </div><!--/row-->
         </div><!--/span-->
       </div><!--/row-->

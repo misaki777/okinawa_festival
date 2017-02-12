@@ -1,6 +1,6 @@
 <?php
 /**
- * 検索ページ
+ * 詳細ページ
  */
 include_once './common/common.php';
 
@@ -13,6 +13,9 @@ foreach ($response->result as $city) {
         'prefCode' => $city->cityCode
     );
 }
+
+$eventId = $_GET['id'];
+
 ?>
 <!DOCTYPE html>
 <html lang="ja">
