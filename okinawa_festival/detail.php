@@ -49,6 +49,9 @@ $nearStation = $event->near_station;
 $address = $event->address;
 $zipCode = $event->postal_code;
 $address = $zipCode.' '.$address;
+
+$tags = explode("　", $event->tags);
+
 ?>
 <!DOCTYPE html>
 <html lang="ja">
