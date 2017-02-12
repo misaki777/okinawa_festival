@@ -15,13 +15,46 @@ foreach ($response->result as $city) {
 }
 
 $eventId = $_GET['id'];
+$eventResponse = execResasApi('api/v1/partner/asutomo/event', array('event_id' => $eventId));
+$event = $eventResponse->result[0];
+$name = $event->event_title;
 
+// サムネイル
+$image = $event->thumb_image;
+// 概要
+$content = $event->event_content;
+// アクセス
+$access = $event->access;
+
+
+$start = $event->event_period_began_on;
+$end = $event->event_period_ended_on;
+$period = $start.' ～ '.$end;
+
+$accessCar = $event->access_car;
+
+$parkingList = array(
+    0 => 'なし',
+    1 => 'あり',
+    2 => 'その他'
+);
+$parking = $parkingList[$event->parking];
+
+$eventHost = $event->event_host;
+
+$inquiryTel = str_replace(array('TEL', 'ＴＥＬ', ':', '：', ' ', '　'), array('', '', '', '', '', ''), $event->info_contact);
+
+$nearStation = $event->near_station;
+
+$address = $event->address;
+$zipCode = $event->postal_code;
+$address = $zipCode.' '.$address;
 ?>
 <!DOCTYPE html>
 <html lang="ja">
   <head>
     <meta charset="utf-8">
-    <title>お祭り検索</title>
+    <title><?php echo $name; ?></title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="">
     <meta name="author" content="">
@@ -67,7 +100,6 @@ $eventId = $_GET['id'];
           <div class="nav-collapse collapse">
             <p class="navbar-text pull-right"></p>
             <ul class="nav">
-              <li class="active"><a href="/search.php">検索</a></li>
               <!--
               <li><a href="#contact">Contact</a></li>
                -->
@@ -94,11 +126,70 @@ $eventId = $_GET['id'];
           </div><!--/.well -->
         </div><!--/span-->
         <div class="span9">
-          <div class="hero-unit">
-            <h1>お祭り検索</h1>
-            <p>左の市町村を選択して検索して下さい。</p>
+          <div class="page-header">
+            <h1><?php echo $name; ?></h1>
           </div>
+
           <div class="row-fluid">
+            <ul class="media-list">
+              <li class="media">
+                <p class="pull-left">
+                  <img class="media-object" src="<?php echo $image; ?>">
+                </p>
+                <div class="media-body span5">
+                  <h4 class="media-heading">概要</h4>
+                  <!-- Nested media object -->
+                  <div class="media">
+                    <?php echo $content; ?>
+                  </div>
+                </div>
+              </li>
+            </ul>
+            <table class="table table-hover span10">
+              <tr>
+                <th class="span3">開催地住所</th>
+                <td><?php echo $address; ?></td>
+              </tr>
+
+              <tr>
+                <th>開催期間</th>
+                <td><?php echo $period; ?></td>
+              </tr>
+              <?php if ($access) { ?>
+              <tr>
+                <th>アクセス</th>
+                <td><?php echo nl2br($access); ?></td>
+              </tr>
+              <?php } ?>
+
+              <?php if ($accessCar) { ?>
+              <tr>
+                <th>車でのアクセス</th>
+                <td><?php echo nl2br($accessCar); ?></td>
+              </tr>
+              <?php } ?>
+
+              <tr>
+                <th>最寄の駅・バス停</th>
+                <td><?php echo $nearStation; ?></td>
+              </tr>
+
+              <tr>
+                <th>駐車場</th>
+                <td><?php echo $parking; ?></td>
+              </tr>
+
+              <tr>
+                <th>主催者</th>
+                <td><?php echo $eventHost; ?></td>
+              </tr>
+
+              <tr>
+                <th>問い合わせ先</th>
+                <td><?php echo $inquiryTel; ?></td>
+              </tr>
+            </table>
+
           </div><!--/row-->
         </div><!--/span-->
       </div><!--/row-->

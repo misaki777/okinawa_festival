@@ -85,7 +85,6 @@ foreach ($eventsResponse->result as $event) {
           <div class="nav-collapse collapse">
             <p class="navbar-text pull-right"></p>
             <ul class="nav">
-              <li class="active"><a href="/search.php">検索</a></li>
               <!--
               <li><a href="#contact">Contact</a></li>
                -->
